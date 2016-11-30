@@ -1,10 +1,10 @@
 const Model = require('./model');
 const db = require('./db');
 
-exports.schema = (name, schema) => {
-    if (!schema) {
-        return db.models[name];
-    }
+exports.getModel = (name) => db.models[name];
+
+exports.addModel = (schema) => {
+    const name = schema._key;
 
     if (db.models[name]) {
         throw 'Model already exists...';

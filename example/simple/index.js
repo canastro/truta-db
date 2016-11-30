@@ -1,15 +1,10 @@
-const { arrayOf } = require('normalizr');
+const trutaDB = require('../../src');
+const specModel = require('./models/spec').model;
+const brandModel = require('./models/brand').model;
 
-const { schema } = require('../src');
-
-const specModel = schema('spec', {});
-const brandModel = schema('brand', {});
-const tvModel = schema('tv', {});
-
-tvModel.schema.define({
-    brand: brandModel.schema,
-    spec: arrayOf(specModel.schema)
-});
+// Possible to get the model by calling getModel to trutaDB entry point
+require('./models/tv');
+const tvModel = trutaDB.getModel('tv');
 
 tvModel.add({
     id: 1,
@@ -26,6 +21,7 @@ tvModel.add({
         hd: true
     }]
 });
+
 tvModel.add([{
     id: 2,
     cenas: 'cenas',

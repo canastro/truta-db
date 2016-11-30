@@ -1,14 +1,14 @@
 const db = require('./db');
 const Query = require('./query');
 
-const { normalize, Schema, arrayOf } = require('normalizr');
+const { normalize, arrayOf } = require('normalizr');
 const values = require('lodash/values');
 
 class Model {
     constructor (name, schema) {
         this.name = name;
         this.ids = `${name}Ids`;
-        this.schema = new Schema(this.name, schema);
+        this.schema = schema;
 
         db[this.name] = {};
         db[this.ids] = [];

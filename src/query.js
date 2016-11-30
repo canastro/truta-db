@@ -12,6 +12,12 @@ class Query {
         this.schema = schema;
     }
 
+    /**
+     * @name include
+     * @param {Array} includes
+     * @returns {Query}
+     *
+     */
     include (includes) {
         this.results = this.results.map((item) => {
             const newItem = Object.assign({}, item);
