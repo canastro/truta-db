@@ -16,7 +16,7 @@ class Query {
      * @name include
      * @param {Array} includes
      * @returns {Query}
-     *
+     * Load related models
      */
     include (includes) {
         this.results = this.results.map((item) => {
@@ -38,27 +38,55 @@ class Query {
         return this;
     }
 
+    /**
+     * @name getAll
+     * @returns {Query}
+     * Gets all items for the selected model
+     */
     getAll () {
         this.results = db[this.modelIds].map((id) => db[this.modelName][id]);
         return this;
     }
 
+    /**
+     * @name find
+     * @param {Number|String} id
+     * @returns {Query}
+     * Finds a element by id
+     */
     find (id) {
         this.results = db[this.modelName][id];
         return this;
     }
 
+    /**
+     * @name find
+     * @param {Array} ids
+     * @returns {Query}
+     * Finds elements by a list of ids
+     */
     findByIds (ids) {
         this.results = ids.map(id => db[this.modelName][id]);
         return this;
     }
 
+    /**
+     * @name where
+     * @param {Object|Function} query
+     * @returns {Query}
+     * Wrapper around lodash's filter function
+     */
     where (query) {
         const array = values(db[this.modelName]);
         this.results = filter(array, query);
         return this;
     }
 
+    /**
+     * @name execute
+     * @returns {Array|Object}
+     * Returns results
+     */
     execute() {
         return this.results;
     }
