@@ -1,5 +1,5 @@
 # Goal
-Normalize state and store it in a database like structure providing some query helpers to fetch data.
+Normalize state (using [normlizr](https://github.com/paularmstrong/normalizr)) and store it in a database like structure providing some query helpers to fetch data.
 
 # Why
 
