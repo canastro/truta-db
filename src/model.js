@@ -11,12 +11,12 @@ const values = require('lodash/values');
  * If the provided items is a array then return a arrayOf schema
  * otherwise return the single instance of a schema
  */
-const getSchema = (items) => {
+const getSchema = (schema, items) => {
     if (!Array.isArray(items)) {
-        return this.schema;
+        return schema;
     }
 
-    return arrayOf(this.schema);
+    return arrayOf(schema);
 };
 
 class Model {
@@ -32,6 +32,7 @@ class Model {
     /**
      * @name store
      * @param {Object} normalized
+     * @returns {Array} ids
      * Iterates the entities on the normalized response and stores it in the database
      * if the entity is not of this model, then calls the appropriate model
      */
@@ -54,18 +55,21 @@ class Model {
         // Merge ids without duplicates
         const ids = Array.isArray(normalized.result) ? normalized.result : [normalized.result];
         db[this.ids] = [...new Set([...db[this.ids] ,...ids])];
+
+        return ids;
     }
 
     /**
      * @name add
      * @param {Object|Array} items
+     * @returns {Array} ids
      * Normalizes items against the schema and stores it
      */
     add (items) {
-        const schema = getSchema(items);
+        const schema = getSchema(this.schema, items);
 
         // Normalize and store all entities
-        this.store(normalize(items, schema));
+        return this.store(normalize(items, schema));
     }
 
     /**
@@ -108,6 +112,14 @@ class Model {
     where (params) {
         const query = new Query(this.schema, this.name, this.ids);
         return query.where(params);
+    }
+
+    update (params, transformer) {
+        const query = new Query(this.schema, this.name, this.ids);
+        const items = query.where(params).execute().map(transformer);
+
+        const ids = this.add(items);
+        return query.findByIds(ids).execute();
     }
 }
 

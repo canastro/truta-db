@@ -1,5 +1,5 @@
 const trutaDB = require('../../src');
-const specModel = require('./models/spec').model;
+const connectorModel = require('./models/connector').model;
 const brandModel = require('./models/brand').model;
 
 // Possible to get the model by calling getModel to trutaDB entry point
@@ -13,12 +13,12 @@ tvModel.add({
         id: 1,
         name: 'grunding'
     },
-    spec: [{
+    connector: [{
         id: 1,
-        size: '10"'
+        name: 'hdmi xso'
     }, {
         id: 2,
-        hd: true
+        spec: 'vga sja'
     }]
 });
 
@@ -29,9 +29,9 @@ tvModel.add([{
         id: 1,
         name: 'grunding'
     },
-    spec: [{
+    connector: [{
         id: 1,
-        size: '10"'
+        name: 'hdmi xso'
     }]
 }, {
     id: 3,
@@ -73,9 +73,20 @@ const tvsWithBrand = tvModel.getAll().include(['brand']).execute();
 console.log('tvsWithBrand: ', tvsWithBrand);
 console.log('################################');
 
-const specs = specModel.getAll().execute();
-console.log('specs: ', specs);
+const connectors = connectorModel.getAll().execute();
+console.log('connectors: ', connectors);
 console.log('################################');
 
-const tvsWithBrandAndSpec = tvModel.getAll().include(['brand', 'spec']).execute();
+const tvsWithBrandAndSpec = tvModel.getAll().include(['brand', 'connector']).execute();
 console.log('tvsWithBrandAndSpec: ', tvsWithBrandAndSpec);
+console.log('################################');
+
+const newTvs = tvModel.update({ cenas: 'cenas' }, (item) => Object.assign({}, item, { cenas: 'blabla' }));
+console.log('newTvs: ', newTvs);
+console.log('################################');
+
+const allNewTvs = tvModel.getAll().execute();
+console.log('allNewTvs: ', allNewTvs);
+console.log('################################');
+
+console.log('db: ', trutaDB.getDump().tv);

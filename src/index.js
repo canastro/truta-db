@@ -1,6 +1,8 @@
 const Model = require('./model');
 const db = require('./db');
 
+exports.getDump = () => db;
+
 exports.getModel = (name) => db.models[name];
 
 /**
